@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0D0B0B">
+<title>Bamboo Sushi Bar &amp; Hibachi Express | Emerald Coast, FL</title>
+<meta name="description" content="Sushi rolled to order at the bar. Hibachi fired fresh in back. Family-owned since 2007 — Crestview, Fort Walton Beach &amp; Niceville, Florida.">
+<link rel="icon" type="image/png" href="images/brand/bamboo-sushi-hibachi-logo.png">
+<link rel="preload" as="image" href="images/food/seared-ahi-tuna-sashimi-emerald-coast.webp" fetchpriority="high">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Restaurant",
+ "name":"Bamboo Sushi Bar & Hibachi Express","servesCuisine":["Japanese","Sushi","Hibachi"],"priceRange":"$$",
+ "openingHoursSpecification":[
+  {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Sunday"],"opens":"11:00","closes":"20:30"},
+  {"@type":"OpeningHoursSpecification","dayOfWeek":["Friday","Saturday"],"opens":"11:00","closes":"21:30"}]}
+</script>
+
+<style>
+/* ============================================================
+   Bamboo Sushi Bar & Hibachi Express
+
+   Motion and texture layer:
+     · animated SVG film grain      (texture over flat dark)
+     · cursor-tracked radial glow   (hero only, pointer:fine only)
+     · magnetic buttons             (translate toward cursor)
+     · 3D card tilt                 (subtle depth on hover)
+     · animated counters            (ease-out quart)
+     · clip-path wipe drawer
+     · color-mix() glow shadows     (tied to the accent variable)
+     · fixed scroll readout         (% + current section)
+
+   Every effect is gated on prefers-reduced-motion, and the
+   pointer-driven ones additionally on (pointer:fine), so touch
+   devices never pay for them.
+   ============================================================ */
+:root{
+  --void:#0D0B0B;
+  --hull:#141111;
+  --plate:#1B1717;
+  --seam:#2A2423;
+  --seam-hot:#3A3230;
+  --red:#D8262A;
+  --red-hot:#FF5A4E;
+  --red-lite:#F25A53;
+  --red-deep:#7A1215;
+  --gold:#C9962F;
+  --bone:#F4EFE7;
+  --ash:#A79C93;
+  --ash-dim:#6B615A;
+  --display:'Fraunces',serif; --body:'Inter',sans-serif; --mono:'IBM Plex Mono',monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --pad:clamp(20px,5vw,72px);
+  --maxw:1400px;
+  --hud-h:clamp(56px,7vw,72px);
+}
+*{margin:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}}
+body{background:var(--void);color:var(--bone);font-family:var(--body);font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+ul{list-style:none}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad)}
+:focus-visible{outline:2px solid var(--red-hot);outline-offset:3px}
+/* anchored sections land below the fixed header, not under it */
+section[id],[id="top"]{scroll-margin-top:calc(var(--hud-h) + 12px)}
+.skip{position:absolute;left:-999px;background:var(--red);color:#fff;padding:12px 20px;z-index:500}
+.skip:focus{left:0;top:0}
+::selection{background:var(--red);color:#fff}
+
+/* ---------- ATMOSPHERE: animated film grain ----------
+   Inline SVG feTurbulence — no image request, no library. The
+   oversized inset + transform keyframes keep it GPU-cheap. */
+.atmos{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.atmos::before{content:"";position:absolute;inset:-100%;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+  opacity:.055;animation:grain 6s steps(6) infinite}
+@keyframes grain{0%,100%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}
+  40%{transform:translate(3%,-4%)}60%{transform:translate(-3%,-3%)}80%{transform:translate(4%,2%)}}
+.no-motion .atmos::before{animation:none}
+
+/* hairline grid, masked so it fades out — structure without noise */
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(90deg,rgba(167,156,147,.055) 1px,transparent 1px),
+                   linear-gradient(rgba(167,156,147,.04) 1px,transparent 1px);
+  background-size:clamp(64px,9vw,130px) clamp(64px,9vw,130px);
+  -webkit-mask-image:radial-gradient(125% 80% at 50% 15%,#000 18%,transparent 82%);
+  mask-image:radial-gradient(125% 80% at 50% 15%,#000 18%,transparent 82%)}
+
+/* everything above the atmosphere layers */
+header,main,footer,.readout,.action-bar,.lb{position:relative;z-index:2}
+
+/* ---------- scroll progress + readout ---------- */
+.prog{position:fixed;top:0;left:0;right:0;height:2px;z-index:300;background:transparent}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--red),var(--gold));
+  box-shadow:0 0 12px color-mix(in srgb,var(--red) 60%,transparent)}
+.readout{position:fixed;right:var(--pad);bottom:88px;z-index:150;display:none;
+  font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ash-dim);text-align:right;line-height:1.9;pointer-events:none}
+@media(min-width:1100px){.readout{display:block}}
+.readout b{color:var(--red-lite);font-weight:500}
+
+/* ---------- header ---------- */
+.hud{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--hud-h);display:flex;align-items:center;
+  gap:22px;padding:0 var(--pad);border-bottom:1px solid transparent;
+  transition:background .45s,backdrop-filter .45s,border-color .45s}
+.hud.stuck{background:rgba(13,11,11,.86);backdrop-filter:blur(16px) saturate(1.25);border-bottom-color:var(--seam)}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{width:38px;filter:drop-shadow(0 0 14px rgba(216,38,42,.45))}
+.brand .word{display:flex;flex-direction:column;line-height:1.08}
+.brand b{font-family:var(--display);font-weight:600;font-size:19px}
+.brand small{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--ash-dim)}
+.hud nav{display:none;gap:30px;margin-left:26px}
+@media(min-width:1000px){.hud nav{display:flex}}
+.hud nav a{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ash);position:relative;padding:5px 0;transition:color .3s}
+.hud nav a::after{content:'';position:absolute;left:0;right:100%;bottom:0;height:1px;
+  background:var(--red);box-shadow:0 0 8px color-mix(in srgb,var(--red) 70%,transparent);
+  transition:right .4s var(--ease)}
+.hud nav a:hover{color:var(--bone)}
+.hud nav a:hover::after,.hud nav a[aria-current="true"]::after{right:0}
+.hud nav a[aria-current="true"]{color:var(--bone)}
+.hud-sp{flex:1}
+.burger{display:flex;flex-direction:column;gap:5px;width:36px;height:36px;justify-content:center}
+@media(min-width:1000px){.burger{display:none}}
+.burger span{display:block;width:23px;height:2px;background:var(--bone);transition:transform .4s var(--ease),opacity .3s}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.drawer{position:fixed;inset:var(--hud-h) 0 0;z-index:190;background:rgba(13,11,11,.98);
+  backdrop-filter:blur(20px);padding:clamp(26px,7vw,54px) var(--pad);display:flex;flex-direction:column;gap:2px;
+  clip-path:inset(0 0 100% 0);transition:clip-path .6s var(--ease);overflow-y:auto}
+.drawer.open{clip-path:inset(0 0 0 0)}
+.drawer a{font-family:var(--display);font-weight:500;font-size:clamp(28px,7vw,46px);padding:14px 0;
+  border-bottom:1px solid var(--seam);display:flex;align-items:baseline;gap:16px}
+.drawer a i{font-family:var(--mono);font-style:normal;font-size:10px;color:var(--red-lite);letter-spacing:.14em}
+body.locked{overflow:hidden}
+
+/* ---------- buttons (magnetic-ready) ---------- */
+.btn{position:relative;display:inline-flex;align-items:center;gap:10px;padding:15px 28px;
+  border:1px solid var(--red);border-radius:100px;overflow:hidden;
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;
+  color:var(--bone);will-change:transform;
+  transition:color .35s var(--ease),border-color .35s,transform .3s var(--ease),box-shadow .35s}
+.btn::before{content:"";position:absolute;inset:0;background:var(--red);z-index:-1;
+  transform:translateY(101%);transition:transform .45s var(--ease)}
+.btn:hover{color:#fff;box-shadow:0 0 26px color-mix(in srgb,var(--red) 42%,transparent)}
+.btn:hover::before{transform:translateY(0)}
+.btn--solid{background:var(--red);color:#fff}
+.btn--solid::before{background:var(--red-hot)}
+.btn--ghost{border-color:var(--seam-hot);color:var(--bone)}
+.btn--ghost::before{background:var(--seam-hot)}
+.btn--ghost:hover{border-color:var(--bone);box-shadow:none}
+.btn svg{width:13px;height:13px}
+.btn--sm{padding:11px 20px;font-size:10px}
+
+/* ---------- kicker / section head ---------- */
+.kick{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--red-lite);margin-bottom:20px}
+.kick::before{content:'';width:22px;height:1px;background:var(--red);
+  box-shadow:0 0 8px color-mix(in srgb,var(--red) 80%,transparent)}
+.kick em{font-style:normal;color:var(--ash-dim)}
+section{padding:clamp(72px,10vw,140px) 0;position:relative}
+.shead{max-width:780px;margin-bottom:clamp(40px,5.5vw,64px)}
+.shead h2{font-family:var(--display);font-weight:600;font-size:clamp(32px,5.4vw,66px);line-height:1.02;letter-spacing:-.02em}
+.shead h2 em{font-style:normal;color:var(--red-lite);
+  text-shadow:0 0 34px color-mix(in srgb,var(--red) 45%,transparent)}
+.shead p{margin-top:18px;color:var(--ash);font-size:16.5px;line-height:1.7;max-width:58ch}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;padding:calc(var(--hud-h) + 40px) 0 60px}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:52% 32%;filter:saturate(1.05);
+  animation:kb 26s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.09)}}
+.no-motion .hero-bg img{animation:none}
+.hero-bg::after{content:'';position:absolute;inset:0;background:
+  linear-gradient(180deg,rgba(13,11,11,.55) 0%,rgba(13,11,11,.72) 48%,var(--void) 97%),
+  linear-gradient(90deg,rgba(13,11,11,.88) 0%,rgba(13,11,11,.18) 58%)}
+/* the cursor-tracked glow lives here */
+.glow{position:absolute;top:0;left:0;width:560px;height:560px;margin:-280px 0 0 -280px;border-radius:50%;
+  pointer-events:none;z-index:1;opacity:0;transition:opacity .6s ease;will-change:transform;
+  background:radial-gradient(circle,rgba(216,38,42,.20),rgba(216,38,42,.07) 42%,transparent 68%)}
+.hero:hover .glow{opacity:1}
+.hero-in{position:relative;z-index:2;width:100%}
+.hero-badge{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--seam-hot);
+  background:rgba(27,23,23,.7);backdrop-filter:blur(8px);padding:8px 16px;border-radius:100px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ash);margin-bottom:26px}
+.hero-badge b{color:var(--gold);font-weight:600}
+@media(max-width:480px){.hero-badge{display:inline-block;line-height:1.75;padding:7px 15px}}
+.hero h1{font-family:var(--display);font-weight:600;font-size:clamp(44px,8.6vw,118px);line-height:.95;
+  letter-spacing:-.025em;max-width:15ch}
+.hero h1 em{font-style:italic;font-weight:500;color:var(--red-hot);
+  text-shadow:0 0 60px rgba(216,38,42,.55)}
+.hero-sub{margin-top:26px;color:var(--ash);font-size:clamp(15px,1.7vw,19px);max-width:50ch;line-height:1.6}
+.hero-acts{display:flex;flex-wrap:wrap;gap:13px;margin-top:36px}
+.hero-stats{display:flex;flex-wrap:wrap;gap:34px;margin-top:44px;padding-top:28px;border-top:1px solid var(--seam)}
+.hero-stats .s b{display:block;font-family:var(--display);font-size:clamp(22px,2.8vw,32px);font-weight:600;color:var(--bone)}
+.hero-stats .s span{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ash-dim)}
+
+/* ---------- ticker ---------- */
+.ticker{--gap:0px;background:var(--red);color:#fff;overflow:hidden;padding:13px 0;position:relative;z-index:2}
+.ticker-track{display:flex;width:max-content;animation:slide 34s linear infinite}
+.ticker span{display:flex;align-items:center;gap:16px;font-family:var(--mono);font-size:11.5px;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;padding:0 24px;white-space:nowrap}
+.ticker span::after{content:'◆';font-size:7px;opacity:.6}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.no-motion .ticker-track{animation:none}
+
+/* ---------- the two houses ---------- */
+.houses{display:grid;gap:18px}
+@media(min-width:900px){.houses{grid-template-columns:1fr 1fr}}
+.house{position:relative;background:var(--hull);border:1px solid var(--seam);border-radius:20px;
+  padding:clamp(28px,3.6vw,44px);overflow:hidden;transform-style:preserve-3d;will-change:transform;
+  transition:transform .4s var(--ease),border-color .4s,box-shadow .4s}
+.house::after{content:'';position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s;
+  background:radial-gradient(90% 70% at 50% 0%,color-mix(in srgb,var(--red) 14%,transparent),transparent 70%)}
+.house:hover{border-color:color-mix(in srgb,var(--red) 55%,transparent);
+  box-shadow:0 24px 60px -30px rgba(0,0,0,.9),0 0 40px -20px color-mix(in srgb,var(--red) 50%,transparent)}
+.house:hover::after{opacity:1}
+.house .hn{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ash-dim);display:block;margin-bottom:20px}
+.house h3{font-family:var(--display);font-weight:600;font-size:clamp(26px,3.4vw,40px);line-height:1.05;margin-bottom:6px}
+.house h3 em{font-style:italic;font-weight:500;color:var(--red-hot)}
+.house .tagline{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+.house p{color:var(--ash);font-size:15.5px;line-height:1.72;margin-bottom:22px}
+.house ul{display:grid;gap:0;border-top:1px solid var(--seam)}
+.house li{display:flex;justify-content:space-between;gap:18px;padding:12px 0;border-bottom:1px solid var(--seam);font-size:14px}
+.house li span{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ash-dim);text-align:right;flex:0 0 auto}
+.house .glyph{position:absolute;right:-24px;top:-40px;font-family:var(--display);font-size:180px;line-height:1;
+  color:rgba(244,239,231,.03);pointer-events:none;user-select:none}
+
+/* ---------- menu ---------- */
+/* menu accordion — closed cards that ignite when opened */
+.acc{border:1px solid var(--seam);border-radius:16px;background:var(--hull);margin-bottom:12px;
+  overflow:hidden;transition:border-color .35s,box-shadow .35s}
+.acc:hover{border-color:color-mix(in srgb,var(--red) 45%,transparent)}
+.acc.open{border-color:color-mix(in srgb,var(--red) 55%,transparent);
+  box-shadow:0 0 34px -14px color-mix(in srgb,var(--red) 45%,transparent)}
+.acc-head{width:100%;display:flex;align-items:center;gap:16px;padding:20px 22px;cursor:pointer;text-align:left}
+.acc-head .t{font-family:var(--display);font-weight:600;font-size:clamp(20px,2.6vw,26px);flex:1}
+.acc-head .t em{font-style:italic;color:var(--red-hot)}
+.acc-head .n{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ash-dim)}
+.acc-head .x{width:32px;height:32px;flex:0 0 auto;border:1px solid var(--seam-hot);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;color:var(--ash);
+  transition:transform .45s var(--ease),background .3s,border-color .3s,color .3s,box-shadow .3s}
+.acc-head .x svg{width:13px;height:13px}
+.acc-head[aria-expanded="true"] .x{transform:rotate(45deg);background:var(--red);border-color:var(--red);
+  color:#fff;box-shadow:0 0 16px color-mix(in srgb,var(--red) 55%,transparent)}
+.acc-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .6s var(--ease)}
+.acc-head[aria-expanded="true"]+.acc-body{grid-template-rows:1fr}
+.acc-inner{overflow:hidden}
+.acc-inner .dishes{padding:2px 22px 24px}
+.dishes{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:16px}
+.dish{position:relative;background:var(--hull);border:1px solid var(--seam);border-radius:16px;padding:24px;
+  overflow:hidden;transform-style:preserve-3d;will-change:transform;
+  transition:transform .35s var(--ease),border-color .35s,box-shadow .35s}
+.dish::after{content:'';position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .4s;
+  background:radial-gradient(80% 60% at 50% 0%,color-mix(in srgb,var(--red) 13%,transparent),transparent 70%)}
+.dish:hover{border-color:color-mix(in srgb,var(--red) 50%,transparent);
+  box-shadow:0 18px 44px -26px rgba(0,0,0,.9)}
+.dish:hover::after{opacity:1}
+.dish h4{font-family:var(--display);font-weight:600;font-size:18.5px;margin-bottom:7px;position:relative}
+.dish p{font-size:13.5px;color:var(--ash);line-height:1.6;position:relative}
+.dish .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;position:relative}
+.dish .tags span{font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;
+  padding:4px 9px;border-radius:100px;border:1px solid var(--seam-hot);color:var(--ash-dim)}
+.dish .tags span.hot{color:var(--red-lite);border-color:color-mix(in srgb,var(--red) 45%,transparent);
+  background:color-mix(in srgb,var(--red) 10%,transparent)}
+
+/* ---------- stats band ---------- */
+.stats{background:var(--hull);border-top:1px solid var(--seam);border-bottom:1px solid var(--seam);position:relative;overflow:hidden}
+.stats::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 55% 65% at 50% 0%,color-mix(in srgb,var(--red) 13%,transparent),transparent 62%)}
+.stat-grid{position:relative;display:grid;grid-template-columns:repeat(2,1fr);gap:34px 20px;text-align:center}
+@media(min-width:760px){.stat-grid{grid-template-columns:repeat(4,1fr)}}
+.stat b{display:block;font-family:var(--display);font-size:clamp(38px,6vw,66px);font-weight:600;line-height:1;
+  color:var(--bone);text-shadow:0 0 40px color-mix(in srgb,var(--red) 30%,transparent)}
+.stat span{display:block;margin-top:10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ash-dim)}
+
+/* ---------- gallery ---------- */
+.gal{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:760px){.gal{grid-template-columns:repeat(4,1fr);gap:16px}}
+.gitem{position:relative;aspect-ratio:1;overflow:hidden;border-radius:16px;background:var(--plate);
+  border:1px solid var(--seam);cursor:zoom-in;padding:0;width:100%;
+  transition:border-color .35s,transform .35s var(--ease)}
+.gitem.wide{grid-column:span 2}
+@media(min-width:760px){.gitem.wide{aspect-ratio:2/1}}
+.gitem:hover{border-color:color-mix(in srgb,var(--red) 55%,transparent);transform:translateY(-3px)}
+.gitem img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease),filter .5s}
+.gitem:hover img{transform:scale(1.07)}
+.gitem figcaption{position:absolute;left:0;right:0;bottom:0;padding:56px 15px 14px;text-align:left;
+  background:linear-gradient(to top,rgba(8,7,7,.92),transparent);
+  font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,239,231,.86);
+  opacity:0;transform:translateY(8px);transition:opacity .35s,transform .35s var(--ease)}
+.gitem:hover figcaption,.gitem:focus-visible figcaption{opacity:1;transform:none}
+@media(hover:none){.gitem figcaption{opacity:1;transform:none}}
+
+/* ---------- locations ---------- */
+.locs{display:grid;gap:18px}
+@media(min-width:900px){.locs{grid-template-columns:repeat(3,1fr)}}
+.loc{position:relative;background:var(--hull);border:1px solid var(--seam);border-radius:20px;padding:30px;
+  display:flex;flex-direction:column;overflow:hidden;transform-style:preserve-3d;will-change:transform;
+  transition:transform .35s var(--ease),border-color .35s,box-shadow .35s}
+.loc::after{content:'';position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .4s;
+  background:radial-gradient(85% 60% at 50% 0%,color-mix(in srgb,var(--red) 13%,transparent),transparent 70%)}
+.loc:hover{border-color:color-mix(in srgb,var(--red) 55%,transparent);
+  box-shadow:0 24px 56px -30px rgba(0,0,0,.9)}
+.loc:hover::after{opacity:1}
+.loc>*{position:relative}
+.status{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px}
+.status .dot{width:7px;height:7px;border-radius:50%}
+.status.open .dot{background:#2ED47F;box-shadow:0 0 10px rgba(46,212,127,.8);animation:ping 2.4s infinite}
+.status.open .t{color:#2ED47F}
+.status.shut .dot{background:var(--ash-dim)}
+.status.shut .t{color:var(--ash-dim)}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(46,212,127,.5),0 0 10px rgba(46,212,127,.8)}
+  70%{box-shadow:0 0 0 9px rgba(46,212,127,0),0 0 10px rgba(46,212,127,.8)}
+  100%{box-shadow:0 0 0 0 rgba(46,212,127,0),0 0 10px rgba(46,212,127,.8)}}
+.loc h3{font-family:var(--display);font-weight:600;font-size:25px;margin-bottom:5px}
+.loc .pin{position:absolute;top:28px;right:28px;font-family:var(--mono);font-size:9px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,150,47,.42);padding:4px 10px;border-radius:100px}
+@media(max-width:620px){.loc .pin{position:static;align-self:flex-start;margin-bottom:12px}}
+.loc .addr{color:var(--ash);font-size:14px;line-height:1.6;margin-bottom:18px}
+.loc .addr a:hover{color:var(--red-lite)}
+.loc .hrs{display:grid;gap:6px;padding:16px 0;margin-bottom:16px;border-top:1px solid var(--seam);border-bottom:1px solid var(--seam);
+  font-family:var(--mono);font-size:11px;color:var(--ash-dim)}
+.loc .hrs div{display:flex;justify-content:space-between;gap:14px}
+.loc .feat{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:22px}
+.loc .feat span{font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--seam-hot);color:var(--ash-dim);padding:5px 10px;border-radius:100px}
+.loc .feat span.on{color:var(--red-lite);border-color:color-mix(in srgb,var(--red) 45%,transparent)}
+.loc .acts{margin-top:auto;display:grid;gap:9px}
+.loc .acts .btn{justify-content:center}
+
+/* ---------- direct order ---------- */
+.direct{position:relative;border:1px solid color-mix(in srgb,var(--red) 45%,transparent);border-radius:24px;
+  background:linear-gradient(150deg,rgba(216,38,42,.16),rgba(122,18,21,.1) 60%,transparent);
+  padding:clamp(30px,4.4vw,56px);overflow:hidden;display:grid;gap:32px}
+@media(min-width:900px){.direct{grid-template-columns:1.05fr .95fr;gap:52px;align-items:center}}
+.direct::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 60% 70% at 88% 8%,color-mix(in srgb,var(--red) 22%,transparent),transparent 60%)}
+.direct>*{position:relative}
+.direct .flag{display:inline-block;background:var(--red);color:#fff;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.16em;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:16px;
+  box-shadow:0 0 22px color-mix(in srgb,var(--red) 50%,transparent)}
+.direct h3{font-family:var(--display);font-weight:600;font-size:clamp(26px,3.6vw,44px);line-height:1.05;margin-bottom:14px}
+.direct p{color:var(--ash);font-size:15.5px;line-height:1.68;max-width:46ch}
+.picks{display:grid;gap:10px}
+.pick{display:flex;align-items:center;gap:14px;background:rgba(27,23,23,.75);border:1px solid var(--seam-hot);
+  border-radius:14px;padding:16px 20px;transition:background .3s,border-color .3s,transform .3s var(--ease)}
+.pick:hover{background:var(--red);border-color:var(--red);transform:translateX(5px);
+  box-shadow:0 0 28px color-mix(in srgb,var(--red) 40%,transparent)}
+.pick b{font-family:var(--display);font-size:17px;font-weight:600;flex:0 0 auto}
+.pick span{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ash-dim);flex:1}
+.pick:hover span{color:rgba(255,255,255,.8)}
+.pick svg{flex:0 0 auto;transition:transform .3s}
+.pick:hover svg{transform:translateX(4px)}
+
+/* ---------- footer ---------- */
+footer{padding:clamp(56px,7vw,90px) 0 40px;border-top:1px solid var(--seam)}
+.fgrid{display:grid;gap:36px;padding-bottom:40px;border-bottom:1px solid var(--seam)}
+@media(min-width:820px){.fgrid{grid-template-columns:1.5fr 1fr 1fr 1fr}}
+.fgrid h4{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ash-dim);margin-bottom:15px}
+.fgrid a,.fgrid p{display:block;color:var(--ash);font-size:14px;margin-bottom:10px}
+.fgrid a:hover{color:var(--red-lite)}
+.fbase{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-top:24px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ash-dim)}
+
+/* ---------- sticky action bar (mobile) ---------- */
+.action-bar{position:fixed;left:0;right:0;bottom:0;z-index:180;display:flex;gap:10px;padding:11px var(--pad);
+  background:rgba(13,11,11,.95);backdrop-filter:blur(16px);border-top:1px solid var(--seam)}
+@media(min-width:1100px){.action-bar{display:none}}
+.action-bar .btn{flex:1;justify-content:center}
+body{padding-bottom:70px}
+@media(min-width:1100px){body{padding-bottom:0}}
+
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:400;background:rgba(8,7,7,.96);display:flex;align-items:center;justify-content:center;
+  padding:5vw;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+.lb.open{opacity:1;visibility:visible}
+.lb img{max-width:min(92vw,900px);max-height:84vh;object-fit:contain;border-radius:8px;
+  box-shadow:0 40px 100px rgba(0,0,0,.8)}
+.lb button{position:absolute;top:24px;right:24px;width:46px;height:46px;border:1px solid var(--seam-hot);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--bone);transition:border-color .3s}
+.lb button:hover{border-color:var(--red)}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .85s var(--ease),transform .85s var(--ease)}
+.rv.in{opacity:1;transform:none}
+.rv[style*="--d"]{transition-delay:calc(var(--d) * 1ms)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="grid-bg" aria-hidden="true"></div>
+<div class="atmos" aria-hidden="true"></div>
+<div class="prog"><i id="prog"></i></div>
+<div class="readout" aria-hidden="true"><span id="roPct">000%</span><br><b id="roSec">TOP</b></div>
+
+<header class="hud" id="hud">
+  <a class="brand" href="#top"><img src="images/brand/bamboo-sushi-hibachi-logo.png" alt="">
+    <span class="word"><b>Bamboo</b><small>Sushi Bar &amp; Hibachi Express</small></span></a>
+  <nav aria-label="Primary">
+    <a href="#houses">The Two Houses</a><a href="#menu">Menu</a><a href="#gallery">Gallery</a><a href="#find">Locations</a>
+  </nav>
+  <span class="hud-sp"></span>
+  <a class="btn btn--solid btn--sm" data-order href="#" data-magnetic style="display:none" id="hudCta">Order Online</a>
+  <button class="burger" id="burger" aria-expanded="false" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+
+<div class="drawer" id="drawer">
+  <a href="#houses"><i>01</i>The Two Houses</a>
+  <a href="#menu"><i>02</i>Menu</a>
+  <a href="#gallery"><i>03</i>Gallery</a>
+  <a href="#find"><i>04</i>Locations</a>
+  <a data-order href="#"><i>→</i>Order Online</a>
+</div>
+
+<main id="main">
+<section class="hero" id="top">
+  <div class="hero-bg"><img src="images/food/seared-ahi-tuna-sashimi-emerald-coast.webp" alt="Seared ahi tuna sashimi" fetchpriority="high"></div>
+  <div class="glow" id="glow" aria-hidden="true"></div>
+  <div class="wrap hero-in">
+    <span class="hero-badge"><b>★ 4.5</b> Google · Best Sushi on the Emerald Coast 2023 &amp; 2024</span>
+    <h1>Rolled at the bar. <em>Fired in back.</em></h1>
+    <p class="hero-sub">Hand-cut sushi you can watch being made, and hibachi out of the kitchen fast enough to catch your lunch break. Family-owned since 2007.</p>
+    <div class="hero-acts">
+      <a class="btn btn--solid" data-order href="#" data-magnetic>Order Online
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="btn btn--ghost" href="#menu" data-magnetic>See the Menu</a>
+    </div>
+    <div class="hero-stats">
+      <div class="s"><b>11am</b><span>Open daily</span></div>
+      <div class="s"><b>3</b><span>Locations</span></div>
+      <div class="s"><b>2007</b><span>Family-owned since</span></div>
+      <div class="s"><b>2</b><span>Drive-Thrus</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track" id="tick">
+    <span>Sushi Bar</span><span>Hibachi Express</span><span>Ramen &amp; Udon</span><span>Sushi Boats</span>
+    <span>Order at the Counter</span><span>Drive-Thru at 2 Locations</span><span>Gluten-Free Menu</span>
+    <span>Vegan Menu</span><span>Catering Platters</span>
+  </div>
+</div>
+
+<!-- two houses -->
+<section id="houses">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="kick">01 <em>— the split</em></span>
+      <h2>One building. <em>Two very different rooms.</em></h2>
+      <p>The sushi bar is out front, in the open, where you can watch every roll get cut. Hibachi runs out of a closed kitchen in back — no show, just speed. Different crafts, same family.</p>
+    </div>
+    <div class="houses">
+      <article class="house rv" data-tilt>
+        <span class="glyph">壽</span>
+        <span class="hn">House 01</span>
+        <h3>The <em>Bar</em></h3>
+        <p class="tagline">Visible · Hand work · Cut to order</p>
+        <p>Every roll, every slice of nigiri, every sashimi plate made by hand while you watch. Sit at the counter and you’ll see the fish come out, the rice get seasoned, your roll get cut. Best seat in the house, same price as a table.</p>
+        <ul>
+          <li>Specialty rolls<span>30+ on the board</span></li>
+          <li>Nigiri &amp; sashimi<span>Cut to order</span></li>
+          <li>Sushi boats<span>Built for the table</span></li>
+          <li>Poké bowls<span>House sauce</span></li>
+        </ul>
+      </article>
+      <article class="house rv" data-tilt style="--d:110">
+        <span class="glyph">火</span>
+        <span class="hn">House 02</span>
+        <h3>The <em>Line</em></h3>
+        <p class="tagline">Closed kitchen · Fired to order · Out fast</p>
+        <p>Hibachi Express runs from the kitchen in back. No ten-minute onion volcano — a flat top, a real cook, and a hot plate in about the time it takes to get your drink. Every plate comes with rice and hibachi vegetables.</p>
+        <ul>
+          <li>Hibachi plates<span>Steak · Filet · Shrimp</span></li>
+          <li>Ramen, udon &amp; curry<span>House broth</span></li>
+          <li>Fried rolls &amp; apps<span>Panko, to order</span></li>
+          <li>Kids plates<span>Sized &amp; priced down</span></li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- menu -->
+<section id="menu">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="kick">02 <em>— the board</em></span>
+      <h2>What people <em>actually order.</em></h2>
+      <p>A slice of the menu across all three locations. Open a category to browse — full board and current pricing live on the ordering site.</p>
+    </div>
+    <div id="menuAcc" class="rv"></div>
+  </div>
+</section>
+
+<!-- stats -->
+<section class="stats">
+  <div class="wrap">
+    <div class="stat-grid">
+      <div class="stat rv"><b data-count="2007">2007</b><span>Founded in Crestview</span></div>
+      <div class="stat rv" style="--d:90"><b data-count="3">3</b><span>Emerald Coast locations</span></div>
+      <div class="stat rv" style="--d:180"><b data-count="1600" data-suffix="+" data-sep>1,600+</b><span>Google reviews</span></div>
+      <div class="stat rv" style="--d:270"><b data-count="45">45</b><span>Seats, year one</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- gallery -->
+<section id="gallery">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="kick">03 <em>— the room</em></span>
+      <h2>The food, the room, <em>the rolls.</em></h2>
+      <p>Select any photo to enlarge.</p>
+    </div>
+    <div class="gal" id="gal"></div>
+  </div>
+</section>
+
+<!-- locations -->
+<section id="find">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="kick">04 <em>— find your bamboo</em></span>
+      <h2>Three rooms on <em>the Emerald Coast.</em></h2>
+      <p>Open 11am every day. Drive-thru at Niceville and Fort Walton Beach.</p>
+    </div>
+    <div class="locs" id="locs"></div>
+  </div>
+</section>
+
+<!-- order -->
+<section id="order">
+  <div class="wrap">
+    <div class="direct rv">
+      <div>
+        <span class="flag">Cheapest option</span>
+        <h3>Order direct. <span style="color:var(--red-hot)">It’s cheaper.</span></h3>
+        <p>Delivery apps add service fees, delivery fees, and a markup on top of the menu price. Order direct and you pay the menu price — pickup, curbside, or drive-thru at Niceville and Fort Walton Beach.</p>
+      </div>
+      <div class="picks">
+        <a class="pick" data-order href="#"><b>Niceville</b><span>117 W John Sims Pkwy</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="15" height="15"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="pick" data-order href="#"><b>Fort Walton Beach</b><span>9 Eglin Pkwy NE</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="15" height="15"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="pick" data-order href="#"><b>Crestview</b><span>2505 S Ferdon Blvd</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="15" height="15"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <a class="brand" href="#top" style="margin-bottom:16px"><img src="images/brand/bamboo-sushi-hibachi-logo.png" alt="">
+          <span class="word"><b>Bamboo</b><small>Sushi Bar &amp; Hibachi Express</small></span></a>
+        <p style="max-width:30ch">Sushi rolled at the bar. Hibachi fired in back. Family-owned on Florida’s Emerald Coast since 2007.</p>
+      </div>
+      <div><h4>Explore</h4><a href="#houses">The Two Houses</a><a href="#menu">Menu</a><a href="#gallery">Gallery</a><a href="#find">Locations</a></div>
+      <div><h4>Call</h4>
+        <a href="tel:+18506891391">Crestview · (850) 689-1391</a>
+        <a href="tel:+18502004250">Fort Walton Beach · (850) 200-4250</a>
+        <a href="tel:+18506780771">Niceville · (850) 678-0771</a></div>
+      <div><h4>Follow</h4>
+        <a href="https://www.instagram.com/bamboo_crestview/">@bamboo_crestview</a>
+        <a href="https://www.instagram.com/bamboo_fwb/">@bamboo_fwb</a>
+        <a href="https://www.instagram.com/bambooniceville/">@bambooniceville</a></div>
+    </div>
+    <div class="fbase"><span>© <span id="yr"></span> Bamboo Sushi Bar &amp; Hibachi Express</span>
+      <span>Crestview · Fort Walton Beach · Niceville</span></div>
+  </div>
+</footer>
+
+<div class="action-bar">
+  <a class="btn btn--ghost btn--sm" href="#menu">Menu</a>
+  <a class="btn btn--solid btn--sm" data-order href="#">Order Online</a>
+</div>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Enlarged image">
+  <button id="lbX" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+  <img id="lbI" src="" alt="">
+</div>
+
+<script>
+document.documentElement.className+=' js';
+(function(){
+'use strict';
+var doc=document, root=doc.documentElement;
+var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var fine=matchMedia('(pointer:fine)').matches;
+if(reduce) root.classList.add('no-motion');
+var $=function(s,c){return (c||doc).querySelector(s)}, $$=function(s,c){return [].slice.call((c||doc).querySelectorAll(s))};
+var clamp=function(v,a,b){return Math.max(a,Math.min(b,v))};
+
+/* ---- data ---- */
+
+/* ---- CONFIG -------------------------------------------------------------
+   Every "Order Online" link on the page reads from ORDER_URL, so the
+   ordering destination is set in exactly one place. */
+var CONFIG = { ORDER_URL : 'https://www.bamboo-sushi.com/' };
+
+var WIRE = function(){
+  [].slice.call(document.querySelectorAll('[data-order]')).forEach(function(a){
+    a.href=CONFIG.ORDER_URL; a.target='_blank'; a.rel='noopener';
+  });
+};
+
+var HOURS={weekday:{o:11,c:20.5},friSat:{o:11,c:21.5},sunday:{o:11,c:20.5}};
+function hoursFor(d){return d===0?HOURS.sunday:(d===5||d===6)?HOURS.friSat:HOURS.weekday}
+function fmt(t){var h=Math.floor(t),m=Math.round((t-h)*60),ap=h>=12?'pm':'am',hh=h>12?h-12:h;
+  return hh+(m?':'+(m<10?'0':'')+m:'')+ap}
+
+var DISHES=[
+  ['bar','Crack Roll','Shrimp, cream cheese, avocado, green onion and krab salad, flash-fried in panko, finished with C.J. sauce.',['Futomaki','Most ordered']],
+  ['bar','Godzilla Roll','Tuna, krab salad, avocado, asparagus and spicy mayo, flash-fried, topped with eel sauce and chili paste.',['Spicy']],
+  ['bar','Mt. Fuji Roll','Yellowtail and tempura crunch, topped with broiled shrimp and scallops in bamboo sauce.',['Raw']],
+  ['bar','Sasquatch Roll','Shrimp, tempura crunch, cucumber and avocado under broiled krab, shrimp and scallops.',['Futomaki']],
+  ['bar','TNT Roll','Tuna, tempura crunch and spicy mayo, topped with tuna and avocado, eel sauce and chili paste.',['Spicy','Raw']],
+  ['bar','Uni','Sea urchin — market price, when we can get it right.',['Raw','Market']],
+  ['bar','Poké Bowl','Tuna or salmon in house poké sauce, avocado, seaweed salad, pickled ginger, smelt roe.',['Raw']],
+  ['bar','Sashimi Dinner','Nine ounces of the day’s best fish, with steamed rice and miso soup.',['Raw']],
+  ['line','Hibachi Filet Mignon','Our most tender cut, griddled to order with hibachi vegetables and rice.',['Premium']],
+  ['line','Teriyaki Chicken','House teriyaki glaze, hibachi vegetables, fried or steamed rice.',['Most ordered']],
+  ['line','Panko Fried Shrimp','Eight large shrimp, panko-breaded and fried to order.',['Popular']],
+  ['line','Yaki Soba Noodles','Stir-fried noodles and mixed vegetables with your choice of protein.',[]],
+  ['line','Ramen','House broth bowl — the kitchen’s answer to a cold day on the coast.',[]],
+  ['line','Pork Katsu Curry','Panko tonkatsu over steamed rice in thick Japanese curry.',[]],
+  ['line','Steak &amp; Shrimp','The classic pairing, both cooked to order on the flat top.',[]],
+  ['line','Miso Soup','Starts almost every table’s order.',['Vegetarian']],
+  ['share','Tenryu Boat','TNT, Sunset and Emerald Dragon, plus salmon, tuna and yellowtail sashimi.',['For sharing']],
+  ['share','Soryu Sushi Boat','Five specialty rolls, a sashimi trio, and shrimp, tuna and krab nigiri.',['For sharing']],
+  ['share','Carnivore Boat','Volcano, Sasquatch, Surf n’ Turf and Crestview rolls, plus lemon pepper tuna.',['For sharing']],
+  ['share','Catering Platters','Sushi trays and hibachi platters, built to order. Call your location ahead.',['Call ahead']]
+];
+
+var GAL=[
+  ['images/food/crispy-fried-sushi-roll-platter-bamboo-sauce.webp','Crispy fried roll platter',1],
+  ['images/food/seared-ahi-tuna-sashimi-emerald-coast.webp','Seared ahi tuna',0],
+  ['images/gallery/dining-room-interior-sushi-bar-menu-boards.webp','The dining room',0],
+  ['images/gallery/guest-enjoying-hibachi-express-meal.webp','Hibachi Express, served',0],
+  ['images/gallery/bamboo-sushi-hibachi-storefront-evening-800w.webp','Storefront, evening',1],
+  ['images/gallery/bamboo-niceville-sushi-bar-hibachi-express-sign-800w.webp','Niceville',0],
+  ['images/gallery/bamboo-sushi-bar-hibachi-express-exterior-sign-800w.webp','Exterior sign',0]
+];
+
+var LOCS=[
+  {n:'Crestview',pin:'Original · 2007',a:'2505 S Ferdon Blvd, Crestview, FL 32536',t:'(850) 689-1391',th:'+18506891391',
+   f:[['Dine-In',0],['Takeout',0],['Curbside',0]],m:'https://maps.google.com/?q=2505+S+Ferdon+Blvd+Crestview+FL+32536'},
+  {n:'Fort Walton Beach',pin:'',a:'9 Eglin Pkwy NE, Fort Walton Beach, FL 32548',t:'(850) 200-4250',th:'+18502004250',
+   f:[['Drive-Thru',1],['Dine-In',0],['Curbside',0]],m:'https://maps.google.com/?q=9+Eglin+Pkwy+NE+Fort+Walton+Beach+FL+32548'},
+  {n:'Niceville',pin:'',a:'117 W John Sims Pkwy, Niceville, FL 32578',t:'(850) 678-0771',th:'+18506780771',
+   f:[['Drive-Thru',1],['Dine-In',0],['Curbside',0]],m:'https://maps.google.com/?q=117+W+John+Sims+Pkwy+Niceville+FL+32578'}
+];
+
+var SECTIONS={top:'TOP',houses:'HOUSES',menu:'MENU',gallery:'GALLERY',find:'LOCATIONS',order:'ORDER'};
+
+$('#yr').textContent=new Date().getFullYear();
+WIRE();
+
+/* ---- ticker: duplicate for a seamless -50% loop ---- */
+(function(){var t=$('#tick'); if(t) t.innerHTML+=t.innerHTML;})();
+
+/* ---- nav + drawer ---- */
+(function(){
+  var hud=$('#hud'), b=$('#burger'), d=$('#drawer'), cta=$('#hudCta');
+  function onScroll(){
+    var s=scrollY>30;
+    hud.classList.toggle('stuck',s);
+    if(innerWidth>=1000) cta.style.display=s?'inline-flex':'none';
+  }
+  addEventListener('scroll',onScroll,{passive:true});
+  addEventListener('resize',onScroll); onScroll();
+  b.addEventListener('click',function(){
+    var o=d.classList.toggle('open'); b.setAttribute('aria-expanded',o); doc.body.classList.toggle('locked',o);
+  });
+  $$('#drawer a').forEach(function(a){a.addEventListener('click',function(){
+    d.classList.remove('open'); b.setAttribute('aria-expanded','false'); doc.body.classList.remove('locked');
+  })});
+})();
+
+/* ---- scroll progress + section readout ---- */
+(function(){
+  var bar=$('#prog'), pct=$('#roPct'), sec=$('#roSec');
+  var links=$$('.hud nav a'), ids=Object.keys(SECTIONS), ticking=false;
+  function update(){
+    ticking=false;
+    var h=doc.documentElement.scrollHeight-innerHeight;
+    var p=h>0?clamp(scrollY/h,0,1):0;
+    bar.style.width=(p*100)+'%';
+    pct.textContent=String(Math.round(p*100)).padStart(3,'0')+'%';
+    var mid=scrollY+innerHeight*.35, cur='top';
+    ids.forEach(function(id){var el=doc.getElementById(id);
+      if(el&&el.getBoundingClientRect().top+scrollY<=mid)cur=id;});
+    sec.textContent=SECTIONS[cur]||'TOP';
+    links.forEach(function(a){a.setAttribute('aria-current',a.getAttribute('href')==='#'+cur?'true':'false')});
+  }
+  addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(update)}},{passive:true});
+  addEventListener('resize',update); update();
+})();
+
+/* ---- reveal ---- */
+var io=null;
+(function(){
+  if(!('IntersectionObserver' in window)||reduce){$$('.rv').forEach(function(e){e.classList.add('in')});return}
+  io=new IntersectionObserver(function(en){
+    en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
+  },{threshold:.12,rootMargin:'0px 0px -7% 0px'});
+  $$('.rv').forEach(function(e){io.observe(e)});
+})();
+function observeNew(sel){ if(io){$$(sel).forEach(function(e){io.observe(e)})} else {$$(sel).forEach(function(e){e.classList.add('in')})} }
+
+/* ---- counters ---- */
+(function(){
+  var els=$$('[data-count]');
+  function out(el,n){
+    var suf=el.getAttribute('data-suffix')||'';
+    return (el.hasAttribute('data-sep')?Math.round(n).toLocaleString('en-US'):String(Math.round(n)))+suf;
+  }
+  function run(el){
+    var target=parseFloat(el.getAttribute('data-count'));
+    if(reduce){el.textContent=out(el,target);return}
+    var t0=performance.now(), dur=1500;
+    (function step(now){
+      var p=clamp((now-t0)/dur,0,1), e=1-Math.pow(1-p,4);
+      el.textContent=out(el,target*e);
+      if(p<1)requestAnimationFrame(step); else el.textContent=out(el,target);
+    })(t0);
+  }
+  if(!('IntersectionObserver' in window)||reduce){els.forEach(run);return}
+  els.forEach(function(e){e.textContent=out(e,0)});
+  var c=new IntersectionObserver(function(en){
+    en.forEach(function(e){if(e.isIntersecting){run(e.target);c.unobserve(e.target)}});
+  },{threshold:.6});
+  els.forEach(function(e){c.observe(e)});
+})();
+
+/* ---- CURSOR GLOW (hero only) ----
+   Lerped at 0.12 so it trails the pointer instead of snapping.
+   rAF stops itself once the glow catches up — no idle loop. */
+(function(){
+  if(reduce||!fine) return;
+  var g=$('#glow'), hero=$('.hero'); if(!g||!hero) return;
+  var x=0,y=0,cx=0,cy=0,raf=null;
+  hero.addEventListener('pointermove',function(e){
+    var r=hero.getBoundingClientRect();
+    x=e.clientX-r.left; y=e.clientY-r.top;
+    if(!raf) raf=requestAnimationFrame(loop);
+  },{passive:true});
+  function loop(){
+    cx+=(x-cx)*0.12; cy+=(y-cy)*0.12;
+    g.style.transform='translate('+cx+'px,'+cy+'px)';
+    raf=(Math.abs(x-cx)>.5||Math.abs(y-cy)>.5)?requestAnimationFrame(loop):null;
+  }
+})();
+
+/* ---- MAGNETIC BUTTONS ---- */
+(function(){
+  if(reduce||!fine) return;
+  $$('[data-magnetic]').forEach(function(el){
+    el.addEventListener('pointermove',function(e){
+      var r=el.getBoundingClientRect();
+      var dx=(e.clientX-(r.left+r.width/2))*0.16;
+      var dy=(e.clientY-(r.top+r.height/2))*0.26;
+      el.style.transform='translate('+dx+'px,'+dy+'px)';
+    });
+    el.addEventListener('pointerleave',function(){el.style.transform=''});
+  });
+})();
+
+/* ---- CARD TILT ----
+   Capped at 5deg. Listeners are bound directly after each render. */
+function bindTilt(){
+  if(reduce||!fine) return;
+  $$('[data-tilt]').forEach(function(el){
+    if(el._tilt) return; el._tilt=true;
+    el.addEventListener('pointermove',function(e){
+      var r=el.getBoundingClientRect();
+      var px=(e.clientX-r.left)/r.width-.5, py=(e.clientY-r.top)/r.height-.5;
+      el.style.transform='perspective(900px) rotateX('+(-py*5).toFixed(2)+'deg) rotateY('+(px*5).toFixed(2)+'deg) translateZ(6px)';
+    });
+    el.addEventListener('pointerleave',function(){el.style.transform=''});
+  });
+}
+bindTilt();
+
+/* ---- menu accordion: all groups rendered once, closed by default ---- */
+(function(){
+  var PLUS='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>';
+  var CATS=[['bar','From the <em>Bar</em>'],['line','From the <em>Line</em>'],['share','To <em>Share</em>']];
+  $('#menuAcc').innerHTML=CATS.map(function(c,i){
+    var rows=DISHES.filter(function(d){return d[0]===c[0]});
+    var cards=rows.map(function(d){
+      var tags=d[3].map(function(t){
+        var hot=/most ordered|popular|premium|market/i.test(t)?' class="hot"':'';
+        return '<span'+hot+'>'+t+'</span>';
+      }).join('');
+      return '<article class="dish" data-tilt><h4>'+d[1]+'</h4><p>'+d[2]+'</p>'+(tags?'<div class="tags">'+tags+'</div>':'')+'</article>';
+    }).join('');
+    return '<div class="acc"><button class="acc-head" aria-expanded="false" aria-controls="accB'+i+'">'+
+      '<span class="t">'+c[1]+'</span><span class="n">'+rows.length+' items</span>'+
+      '<span class="x">'+PLUS+'</span></button>'+
+      '<div class="acc-body" id="accB'+i+'" role="region"><div class="acc-inner">'+
+      '<div class="dishes">'+cards+'</div></div></div></div>';
+  }).join('');
+  $$('#menuAcc .acc-head').forEach(function(h){
+    h.addEventListener('click',function(){
+      var open=h.getAttribute('aria-expanded')!=='true';
+      h.setAttribute('aria-expanded',open);
+      h.parentNode.classList.toggle('open',open);
+    });
+  });
+  bindTilt();
+})();
+
+/* ---- gallery ---- */
+(function(){
+  $('#gal').innerHTML=GAL.map(function(g){
+    return '<button class="gitem'+(g[2]?' wide':'')+'" data-full="'+g[0]+'" data-alt="'+g[1]+'" aria-label="Enlarge: '+g[1]+'">'+
+      '<img src="'+g[0]+'" alt="'+g[1]+'" loading="lazy"><figcaption>'+g[1]+'</figcaption></button>';
+  }).join('');
+})();
+
+/* ---- locations ---- */
+(function(){
+  var d=new Date(), h=hoursFor(d.getDay()), now=d.getHours()+d.getMinutes()/60;
+  var open=now>=h.o&&now<h.c;
+  var txt=open?'Open until '+fmt(h.c):'Closed · opens '+fmt(h.o);
+  $('#locs').innerHTML=LOCS.map(function(L,i){
+    var feats=L.f.map(function(f){return '<span'+(f[1]?' class="on"':'')+'>'+f[0]+'</span>'}).join('');
+    return '<article class="loc rv" data-tilt style="--d:'+(i*100)+'">'+
+      (L.pin?'<span class="pin">'+L.pin+'</span>':'')+
+      '<span class="status '+(open?'open':'shut')+'"><span class="dot"></span><span class="t">'+txt+'</span></span>'+
+      '<h3>'+L.n+'</h3>'+
+      '<p class="addr"><a href="'+L.m+'">'+L.a+'</a><br><a href="tel:'+L.th+'">'+L.t+'</a></p>'+
+      '<div class="hrs"><div><span>Mon–Thu</span><span>11am–8:30pm</span></div>'+
+        '<div><span>Fri–Sat</span><span>11am–9:30pm</span></div>'+
+        '<div><span>Sun</span><span>11am–8:30pm</span></div></div>'+
+      '<div class="feat">'+feats+'</div>'+
+      '<div class="acts"><a class="btn btn--solid btn--sm" href="'+CONFIG.ORDER_URL+'" target="_blank" rel="noopener">Order Online</a>'+
+        '<a class="btn btn--ghost btn--sm" href="'+L.m+'">Directions</a></div>'+
+    '</article>';
+  }).join('');
+  observeNew('#locs .rv'); bindTilt();
+})();
+
+/* ---- lightbox ---- */
+(function(){
+  var lb=$('#lb'), img=$('#lbI'), x=$('#lbX'), last=null;
+  doc.addEventListener('click',function(e){
+    var t=e.target.closest('[data-full]');
+    if(t){last=t;img.src=t.getAttribute('data-full');img.alt=t.getAttribute('data-alt')||'';lb.classList.add('open');x.focus()}
+  });
+  function shut(){lb.classList.remove('open');if(last)last.focus()}
+  x.addEventListener('click',shut);
+  lb.addEventListener('click',function(e){if(e.target===lb)shut()});
+  doc.addEventListener('keydown',function(e){if(e.key==='Escape'&&lb.classList.contains('open'))shut()});
+})();
+})();
+</script>
+</body>
+</html>

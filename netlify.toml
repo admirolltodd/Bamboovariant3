@@ -1,3 +1,64 @@
 # Static site: no build step, publish the repo root as-is.
 [build]
   publish = "."
+
+# Images keep their filename when the photo changes (see docs/ASSETS.md),
+# so a long cache is safe. HTML is edited over time (all CSS/JS/JSON-LD
+# live inline inside it — see docs/PROJECT-STRUCTURE.md), so it stays on a
+# short/no cache to avoid returning visitors seeing stale content.
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+# Security headers for every response. This is a static informational site
+# with no login, forms, or visitor-input reflected back into a page, so
+# these close off the standard things a public site shouldn't leave open by
+# default (clickjacking, MIME sniffing, unused browser permissions) rather
+# than patch an active vulnerability. script-src and style-src need
+# 'unsafe-inline' because this variant's entire <style>, JSON-LD block and
+# <script> live inline in index.html with no build step to hash or
+# externalize them. fonts.googleapis.com/fonts.gstatic.com are allowed
+# because index.html loads Fraunces, Inter and IBM Plex Mono from Google
+# Fonts — if that font request is ever removed, these can be tightened
+# back to 'self'.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+
+# Project documentation lives at the repo root next to index.html so it's
+# easy to find on GitHub, but publish="." would otherwise also let Netlify
+# serve these as live public pages. Block them without touching the files
+# themselves or how GitHub/git sees them.
+[[redirects]]
+  from = "/README.md"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/netlify.toml"
+  to = "/index.html"
+  status = 404
+  force = true

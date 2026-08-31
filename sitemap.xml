@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Placeholder domain: this variant has not been assigned a confirmed
+  production domain yet. Replace REPLACE-WITH-PRODUCTION-DOMAIN below (and
+  in robots.txt) with the real domain before this sitemap is relied on by
+  search engines. This variant is a single page today, so only one <url>
+  is listed — add more only if separate pages are ever introduced.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://REPLACE-WITH-PRODUCTION-DOMAIN/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>

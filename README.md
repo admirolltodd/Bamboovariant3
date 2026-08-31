@@ -18,15 +18,16 @@ This variant keeps the dark charcoal/red restaurant identity, strong food photog
 
 - `index.html` — primary landing page
 - `menu/index.html` — expanded shared menu landing page
+- `gallery/index.html` — dedicated photo gallery
+- `about/index.html` — Bamboo story and concept page
 - `locations/index.html` — location directory
 - `locations/crestview/index.html` — Crestview location
 - `locations/fort-walton-beach/index.html` — Fort Walton Beach location
 - `locations/niceville/index.html` — Niceville location
 - `404.html` — branded error page
 - `robots.txt` — crawler guidance
-- `sitemap.xml` — crawlable page inventory
 - `images/` — existing asset library
-- `netlify.toml` — Netlify static deployment configuration
+- `netlify.toml` — Netlify static deployment and response-header configuration
 
 ## Ordering
 
@@ -38,4 +39,11 @@ Do not invent menu ingredients, photo identities, awards, press claims, hours, o
 
 ## Deployment
 
-This project has no build step. Netlify publishes the repository root directly.
+This project has no build step. Netlify publishes the repository root directly. Response headers and image caching are configured in `netlify.toml`.
+
+## Remaining integration work
+
+- Wire the homepage navigation to the dedicated Menu, Gallery, About and Locations pages while preserving useful on-page sections.
+- Replace or revise the current single-rule live open/closed calculation.
+- Complete keyboard behavior and ARIA relationships for homepage menu tabs.
+- Add canonical URLs, Open Graph metadata and a sitemap after the production domain is finalized.
